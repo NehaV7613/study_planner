@@ -2,5 +2,37 @@
 <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
+    <div id="role-error" style="color: red;"></div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const roleField = document.querySelector("#id_role");
+            const studentIdField = document.querySelector("#id_student_id").parentElement;
+            const facultyIdField = document.querySelector("#id_faculty_id").parentElement;
+            const roleError = document.getElementById("role-error");
+
+            function toggleFields() {
+                const selectedRole = roleField.value;
+                if (selectedRole === "student") {
+                    studentIdField.style.display = "block";
+                    facultyIdField.style.display = "none";
+                    document.getElementById("id_faculty_id").value = ""; // Clear faculty ID
+                } else if (selectedRole === "teacher") {
+                    studentIdField.style.display = "none";
+                    facultyIdField.style.display = "block";
+                    document.getElementById("id_student_id").value = ""; // Clear student ID
+                } else {
+                    studentIdField.style.display = "none";
+                    facultyIdField.style.display = "none";
+                }
+                roleError.textContent = ""; // Clear error messages
+            }
+
+            // Initial toggle based on default role
+            toggleFields();
+
+            // Attach event listener to role field
+            roleField.addEventListener("change", toggleFields);
+        });
+    </script>
     <button type="submit">Register</button>
 </form>

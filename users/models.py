@@ -1,15 +1,20 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-
-# Create your models here.
 class CustomUser(AbstractUser):
     ROLE_CHOICES = [
         ('student', 'Student'),
         ('teacher', 'Teacher'),
-        ('admin', 'Admin'),
     ]
+    name = models.CharField(max_length=150, blank=False)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='student')
-    
-    def __str__(self):
-        return self.username
+    student_id = models.CharField(max_length=15, blank=True, null=True)
+    faculty_id = models.CharField(max_length=15, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        # Ensure only one ID is populated based on the role
+        if self.role == 'student':
+            self.faculty_id = None
+        elif self.role == 'teacher':
+            self.student_id = None
+        super().save(*args, **kwargs)

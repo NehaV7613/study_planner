@@ -4,3 +4,12 @@
     {{ form.as_p }}
     <button type="submit">Login</button>
 </form>
+
+<!-- Add a script to display the pop-up if there's an error message -->
+{% if error_message %}
+    <script type="text/javascript">
+        window.onload = function() {
+            alert("{{ error_message }}");  // Show the pop-up with the error message
+        }
+    </script>
+{% endif %}
