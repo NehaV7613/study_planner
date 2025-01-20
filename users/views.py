@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate, logout
+from django.shortcuts import render, redirect # type: ignore
+from django.contrib.auth import login, authenticate, logout # type: ignore
 from .forms import CustomUserCreationForm, CustomAuthenticationForm
 
 # Registration view (No changes needed here)

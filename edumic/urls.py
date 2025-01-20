@@ -21,4 +21,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('core.urls')),
     path('users/', include('users.urls')),
+    path('admin_panel/', include('admin_panel.urls')),  # Add the admin panel app URLs
+    # Default Django admin
 ]

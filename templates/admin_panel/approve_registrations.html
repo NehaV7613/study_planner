@@ -1,0 +1,13 @@
+<form method="post">
+    {% csrf_token %}
+    <h2>Unapproved Registrations</h2>
+    <ul>
+        {% for user in unapproved_users %}
+            <li>
+                <input type="checkbox" name="user_ids" value="{{ user.id }}">
+                {{ user.name }} ({{ user.role }})
+            </li>
+        {% endfor %}
+    </ul>
+    <button type="submit">Approve Selected</button>
+</form>
