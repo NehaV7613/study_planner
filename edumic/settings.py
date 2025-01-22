@@ -133,7 +133,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.CustomUser'
 
 AUTHENTICATION_BACKENDS = [
-    #'django.contrib.auth.backends.ModelBackend',  # Default Django backend (optional)
+    'django.contrib.auth.backends.ModelBackend',  # Default Django backend (optional)
     'admin_panel.backends.AdminAuthBackend',      # Custom backend for admins
     #'admin_panel.backends.NonAdminAuthBackend',   # Custom backend for non-admin users
 ]

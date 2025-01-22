@@ -12,6 +12,16 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = CustomUser
         fields = ['name', 'username', 'email', 'password1', 'password2', 'role', 'student_id', 'faculty_id']
+        labels = {
+            'name': 'Name',
+            'username': 'Username',
+            'email': 'Email',
+            'password1': 'Password',
+            'password2': 'Confirm Password',
+            'role': 'Role',
+            'student_id': 'Student ID',
+            'faculty_id': 'Faculty ID',
+        }
 
     def clean(self):
         cleaned_data = super().clean()
@@ -32,6 +42,16 @@ class CustomUserCreationForm(UserCreationForm):
                 self.add_error("student_id", "Student ID should not be filled for teachers.")
 
         return cleaned_data
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+        if field.label:  # Ensure label is not None
+            field.label = field.label.capitalize()
+        self.fields['role'].widget.attrs['class'] = 'form-select'
+
+
 
 
 # Custom authentication form to handle login errors
@@ -45,3 +65,4 @@ class CustomAuthenticationForm(AuthenticationForm):
             del self.errors['__all__']
         
         return cleaned_data
+    

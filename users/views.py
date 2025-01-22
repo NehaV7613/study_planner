@@ -17,7 +17,7 @@ def register(request):
     return render(request, 'users/register.html', {'form': form})
 
 
-# Login view
+
 # Login view
 def user_login(request):
     if request.method == 'POST':
@@ -25,11 +25,11 @@ def user_login(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
+            print(f"User {user.username} logged in successfully")  # Debugging
             return redirect('index')
         else:
-            # Pass the error message to the template
-            error_message = "Invalid username or password."
-            return render(request, 'users/login.html', {'form': form, 'error_message': error_message})
+            print(f"Form errors: {form.errors}")  # Debugging
+            return render(request, 'users/login.html', {'form': form})
     else:
         form = CustomAuthenticationForm()
     return render(request, 'users/login.html', {'form': form})
@@ -39,3 +39,6 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect('index')
+
+def index(request):
+    return render(request, 'core/index.html') 
