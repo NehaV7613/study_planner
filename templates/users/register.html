@@ -99,6 +99,16 @@
                                 <button type="submit" class="btn btn-primary">Register</button>
                             </form>
                             
+                            {% if messages %}
+                                <div class="alert-container">
+                                {% for message in messages %}
+                                    <div class="alert alert-{{ message.tags }}">
+                                    {{ message }}
+                                    </div>
+                                {% endfor %}
+                                </div>
+                            {% endif %}
+
                         </div>
 
                     
@@ -110,7 +120,7 @@
 
                         <div>
                             <span> Already have an account? </span>
-                            <a href="{% url 'login' %}">Login</a>
+                            <a href="{% url 'users:login' %}">Login</a>
                         </div>
                     </div>
                 </div>

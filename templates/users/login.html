@@ -82,8 +82,21 @@
                             </form>
                             <p class="text-center mt-3">
                                 Don't have an account? 
-                                <a href="{% url 'register' %}" class="text-decoration-none">Register here</a>.
+                                <a href="{% url 'users:register' %}" class="text-decoration-none">Register here</a>.
                             </p>
+
+                            {% if messages %}
+                                <div class="alert-container">
+                                {% for message in messages %}
+                                    <div class="alert alert-{{ message.tags }}">
+                                    {{ message }}
+                                    </div>
+                                {% endfor %}
+                                </div>
+                            {% endif %}
+
+    
+
                         </div>
 
                         <!-- Image Section -->
