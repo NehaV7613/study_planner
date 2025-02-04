@@ -1,0 +1,56 @@
+📌 Data Structures Syllabus
+🔹 Module 1: Introduction to Data Structures
+Introduction to Data Structures
+Classification: Linear vs. Non-Linear Data Structures
+Static vs. Dynamic Data Structures
+Complexity Analysis (Time & Space Complexity)
+Asymptotic Notations: Big-O, Big-Θ, Big-Ω
+🔹 Module 2: Arrays & Strings
+Arrays
+
+Definition and Memory Representation
+Operations: Insertion, Deletion, Searching, Traversing
+Types: One-Dimensional, Multi-Dimensional
+Applications: Prefix Sum, Sliding Window, Two-pointer technique
+Strings
+
+String Manipulations
+Pattern Matching Algorithms (KMP, Rabin-Karp, Z-Algorithm)
+Anagram & Palindrome Problems
+🔹 Module 3: Linked Lists
+Singly Linked List
+
+Representation & Operations (Insertion, Deletion, Traversal)
+Reversing a Linked List
+Detecting & Removing Loops (Floyd’s Cycle Detection)
+Doubly Linked List
+
+Forward & Backward Traversal
+Operations (Insert, Delete, Reverse)
+Circular Linked List
+
+Applications in OS Scheduling
+🔹 Module 4: Stacks & Queues
+Stack
+
+LIFO Principle
+Implementation (Array & Linked List)
+Applications:
+Balancing Parentheses
+Infix to Postfix Conversion
+Next Greater Element
+Queue
+
+FIFO Principle
+Implementation (Array & Linked List)
+Types:
+Circular Queue
+Priority Queue (Heap)
+Deque (Double-ended Queue)
+🔹 Module 5: Recursion & Backtracking
+Recursion Basics (Tail & Non-Tail Recursion)
+Backtracking:
+N-Queens Problem
+Rat in a Maze
+Subset Sum
+Word Search

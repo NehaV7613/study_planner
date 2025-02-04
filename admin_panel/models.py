@@ -31,3 +31,15 @@ class ApprovalRequest(models.Model):
 
     def __str__(self):
         return f"Approval Request - {self.user.username} ({self.user.role})"
+
+
+
+
+class Syllabus(models.Model):
+    title = models.CharField(max_length=255)
+    course_code = models.CharField(max_length=20, unique=True)  # Unique identifier for each course
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    syllabus_file = models.FileField(upload_to="syllabus/")  # File upload field
+
+    def __str__(self):
+        return f"{self.title} ({self.course_code})"

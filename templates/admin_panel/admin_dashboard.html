@@ -18,8 +18,8 @@
             <ul class="sidebar-menu">
                 <li><a href="{% url 'admin_register' %} "><i class="fas fa-user-plus"></i> Register Admin</a></li>
                 <li><a href="{% url 'approve_users' %}"><i class="fas fa-check-circle"></i> Approve Registrations</a></li>
-                <li><a href="#"><i class="fas fa-upload"></i> Upload Syllabus</a></li>
-                <li><a href="#"><i class="fas fa-cogs"></i> Custom Admin Features</a></li>
+                <li><a href="{% url 'upload_syllabus' %}"><i class="fas fa-upload"></i> Upload Syllabus</a></li>
+                <li><a href="{% url 'syllabus_list' %}"><i class="fas fa-cogs"></i> View Uploaded Syllabi</a></li>
             </ul>
         </aside>
 
@@ -43,8 +43,8 @@
                     <p>Upload and update syllabus for students.</p>
                 </div>
                 <div class="card">
-                    <h3><i class="fas fa-cogs"></i> Custom Features</h3>
-                    <p>Configure admin-specific features.</p>
+                    <h3><i class="fas fa-cogs"></i> Uploaded Syllabi</h3>
+                    <p>View uploaded Syllabi.</p>
                 </div>
             </div>
         </main>

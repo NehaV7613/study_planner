@@ -5,6 +5,9 @@ from django.contrib import messages
 from users.models import CustomUser  # Import the existing user model
 from .models import ApprovalRequest
 from .forms import AdminUserCreationForm
+from .models import Syllabus
+from .forms import SyllabusUploadForm
+
 
 # Ensure only superadmins can access certain views
 def is_superadmin(user):
@@ -72,3 +75,24 @@ def approve_users(request):
         return redirect(request.path)  # Reload the same page instead of redirecting
 
     return render(request, 'admin_panel/approve_users.html', {'pending_users': pending_users})
+
+
+@login_required
+@user_passes_test(is_superadmin)
+def upload_syllabus(request):
+    if request.method == "POST":
+        form = SyllabusUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Syllabus uploaded successfully!")
+            return redirect("syllabus_list")
+    else:
+        form = SyllabusUploadForm()
+    return render(request, "admin_panel/upload_syllabus.html", {"form": form})
+
+
+@login_required
+@user_passes_test(is_superadmin)
+def syllabus_list(request):
+    syllabi = Syllabus.objects.all()
+    return render(request, "admin_panel/syllabus_list.html", {"syllabi": syllabi})

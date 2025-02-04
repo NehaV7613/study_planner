@@ -141,3 +141,6 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 LOGIN_URL = '/admin_panel/login/'  # Default login URL for admins
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
