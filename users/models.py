@@ -1,7 +1,6 @@
 from django.contrib.auth.models import AbstractUser, Group, Permission  # type: ignore
 from django.db import models  # type: ignore
 
-
 class CustomUser(AbstractUser):
     STUDENT = 'student'
     TEACHER = 'teacher'
@@ -9,11 +8,13 @@ class CustomUser(AbstractUser):
         ('student', 'Student'),
         ('teacher', 'Teacher'),
     ]
+    
     name = models.CharField(max_length=150, blank=False)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='student')
     student_id = models.CharField(max_length=15, blank=True, null=True)
     faculty_id = models.CharField(max_length=15, blank=True, null=True)
-    is_superadmin = models.BooleanField(default=False) 
+    is_superadmin = models.BooleanField(default=False)
+    is_approved = models.BooleanField(default=False)  # ✅ New field for approval
 
     # Add unique related_name to avoid conflicts
     groups = models.ManyToManyField(
@@ -38,5 +39,3 @@ class CustomUser(AbstractUser):
         elif self.role == 'teacher':
             self.student_id = None
         super().save(*args, **kwargs)
-        
-        

@@ -8,7 +8,11 @@ def register(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
+            user = form.save(commit=False)
+            user.is_active = False  # Ensure user is not active until approved
+            user.is_approved = False  # Mark as not approved
+            user.save()
+            
             # Explicitly specify the default backend for non-admin users
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             
@@ -20,6 +24,7 @@ def register(request):
     else:
         form = CustomUserCreationForm()
     return render(request, 'users/register.html', {'form': form})
+
 
 # Login view
 def user_login(request):

@@ -20,3 +20,14 @@ class AdminUser(AbstractUser):
         help_text="Specific permissions for this admin.",
         verbose_name="user permissions",
     )
+
+
+
+from users.models import CustomUser  # Import the existing CustomUser model
+
+class ApprovalRequest(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="approval_request")
+    requested_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Approval Request - {self.user.username} ({self.user.role})"

@@ -139,3 +139,5 @@ AUTHENTICATION_BACKENDS = [
     'admin_panel.backends.AdminAuthBackend',      # Custom backend for admins
     #'admin_panel.backends.NonAdminAuthBackend',   # Custom backend for non-admin users
 ]
+
+LOGIN_URL = '/admin_panel/login/'  # Default login URL for admins

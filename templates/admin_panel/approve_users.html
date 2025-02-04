@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Approve Users</title>
+</head>
+<body>
+    <h1>Approve Student/Faculty Registrations</h1>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <p style="color: {% if message.tags == 'success' %}green{% else %}red{% endif %};">
+                {{ message }}
+            </p>
+        {% endfor %}
+    {% endif %}
+    
+    <ul>
+        <!-- admin_panel/approve_users.html -->
+{% if pending_users %}
+<ul>
+    {% for user in pending_users %}
+        <li>
+            Username: {{ user.username }} - Role: {{ user.get_role_display }}
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="user_id" value="{{ user.id }}">
+                <button type="submit" name="action" value="approve">Approve</button>
+                <button type="submit" name="action" value="reject">Reject</button>
+            </form>
+        </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No pending registrations.</p>
+{% endif %}
+
+    </ul>
+</body>
+</html>
