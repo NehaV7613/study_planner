@@ -1,0 +1,91 @@
+/* Custom Styles */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #fafafa; /* Soft white background */
+}
+
+/* Navbar */
+.navbar {
+  background-color: #120b4a; /* Lavender */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  justify-content: space-evenly;
+}
+
+.navbarNav {
+  justify-content: space-evenly;
+}
+
+.navbar-brand, .nav-link {
+  color: #ffffff !important; /* White text */
+}
+
+.nav-link.active {
+  background-color: #a29bfe; /* Lighter lavender */
+  border-radius: 5px;
+}
+
+.nav-link:hover {
+  background-color: #a29bfe; /* Lighter lavender */
+  border-radius: 2px;
+  margin-right: 3px;
+  justify-content: space-evenly;
+}
+
+/* User Greeting Section */
+h2 {
+  color: #2d3436; /* Dark gray */
+}
+
+/* Thought Cloud */
+.thought-cloud {
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  justify-content: center;
+  margin-top: 200px;
+}
+
+.thought-cloud::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 10px solid transparent;
+  border-bottom-color: #ffffff;
+  height: 1000px;
+}
+
+/* Cards */
+.card {
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+  background-color: #ffffff;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card-title {
+  color: #2d3436; /* Dark gray */
+}
+
+.btn-primary {
+  background-color: #55efc4; /* Mint green */
+  border: none;
+  color: #2d3436; /* Dark gray */
+}
+
+.btn-primary:hover {
+  background-color: #00b894; /* Darker mint green */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .thought-cloud {
+    margin-top: 20px;
+  }
+}

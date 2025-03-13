@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faculty Dashboard</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container-fluid">
+    <!-- Header -->
+    <header class="bg-primary text-white text-center py-4">
+      <h1>Faculty Dashboard</h1>
+    </header>
+
+    <!-- Main Content -->
+    <div class="row mt-4">
+      <!-- Left Sidebar: Post Deadlines and Remarks -->
+      <div class="col-md-4">
+        <!-- Post Deadlines Section -->
+        <div class="card mb-4">
+          <div class="card-header bg-success text-white">
+            <h5 class="card-title mb-0">Post Deadlines</h5>
+          </div>
+          <div class="card-body">
+            <form method="post" action="{% url 'add_deadline' %}">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="task" class="form-label">Task</label>
+                <select class="form-select" id="task" name="task" required>
+                  <option value="" selected disabled>Select a task</option>
+                  {% for task in tasks %}
+                    <option value="{{ task.id }}">{{ task.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="student" class="form-label">Student</label>
+                <select class="form-select" id="student" name="student" required>
+                  <option value="" selected disabled>Select a student</option>
+                  {% for student in students %}
+                    <option value="{{ student.id }}">{{ student.username }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="due_date" class="form-label">Due Date</label>
+                <input type="datetime-local" class="form-control" id="due_date" name="due_date" required>
+              </div>
+              <button type="submit" class="btn btn-success">Add Deadline</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Post Remarks Section -->
+        <div class="card mb-4">
+          <div class="card-header bg-info text-white">
+            <h5 class="card-title mb-0">Post Remarks on Student Progress</h5>
+          </div>
+          <div class="card-body">
+            <form method="post" action="{% url 'add_remark' %}">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="task" class="form-label">Task</label>
+                <select class="form-select" id="task" name="task" required>
+                  <option value="" selected disabled>Select a task</option>
+                  {% for task in tasks %}
+                    <option value="{{ task.id }}">{{ task.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="student" class="form-label">Student</label>
+                <select class="form-select" id="student" name="student" required>
+                  <option value="" selected disabled>Select a student</option>
+                  {% for student in students %}
+                    <option value="{{ student.id }}">{{ student.username }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="remark" class="form-label">Remarks</label>
+                <textarea class="form-control" id="remark" name="remark" rows="3" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-info">Submit Remarks</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Side: Dashboard -->
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-header bg-warning text-white">
+            <h5 class="card-title mb-0">Dashboard</h5>
+          </div>
+          <div class="card-body">
+            <!-- Upcoming Deadlines -->
+            <h6 class="text-primary">Upcoming Deadlines</h6>
+            <ul class="list-group mb-4">
+              {% for deadline in deadlines %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  {{ deadline.task.name }} - {{ deadline.student.username }} (Due: {{ deadline.due_date|date:"Y-m-d H:i" }})
+                  <span class="badge bg-{{ deadline.status|lower }}">{{ deadline.status }}</span>
+                </li>
+              {% empty %}
+                <li class="list-group-item">No deadlines found.</li>
+              {% endfor %}
+            </ul>
+
+            <!-- Student Progress -->
+            <h6 class="text-success">Student Progress</h6>
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Student Name</th>
+                  <th>Task</th>
+                  <th>Remarks</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for remark in remarks %}
+                  <tr>
+                    <td>{{ remark.student.username }}</td>
+                    <td>{{ remark.task.name }}</td>
+                    <td>{{ remark.remark }}</td>
+                  </tr>
+                {% empty %}
+                  <tr>
+                    <td colspan="3" class="text-center">No remarks found.</td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

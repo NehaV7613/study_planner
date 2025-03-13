@@ -24,7 +24,8 @@ urlpatterns = [
     path('', include('core.urls')),
     path('users/', include(('users.urls', 'users'), namespace='users')),
     path('admin_panel/', include('admin_panel.urls')),  # Add the admin panel app URLs
-    # Default Django admin
+    path('student/', include('student.urls')), # Add the student app URLs
+    path('faculty/', include('faculty.urls')),  # Add the faculty app URLs
 ]
 
 if settings.DEBUG:

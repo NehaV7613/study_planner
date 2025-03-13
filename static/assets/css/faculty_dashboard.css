@@ -1,0 +1,43 @@
+/* Custom Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+  }
+  
+  header {
+    margin-bottom: 2rem;
+  }
+  
+  .card {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-header {
+    font-weight: bold;
+  }
+  
+  .list-group-item {
+    margin-bottom: 0.5rem;
+    border-radius: 0.25rem;
+  }
+  
+  .table {
+    margin-top: 1rem;
+  }
+  
+  .table th, .table td {
+    vertical-align: middle;
+  }
+  
+  .badge {
+    font-size: 0.9rem;
+  }
+  
+  .badge-pending {
+    background-color: #ffc107; /* Yellow for Pending */
+  }
+  
+  .badge-completed {
+    background-color: #28a745; /* Green for Completed */
+  }
