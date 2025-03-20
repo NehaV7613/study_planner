@@ -1,0 +1,11 @@
+<h2>Submit Progress</h2>
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>
+        {{ form.as_p }}
+    </div>
+    <button type="submit">Submit</button>
+</form>
+
+<a href="{% url 'student_dashboard' %}">Back to Dashboard</a>

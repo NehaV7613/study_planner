@@ -11,4 +11,5 @@ urlpatterns = [
     path('approve_users/', approve_users, name='approve_users'),
     path("upload_syllabus/", upload_syllabus, name="upload_syllabus"),
     path("syllabus_list/", syllabus_list, name="syllabus_list"),
+    path('admin_logout/', views.admin_logout, name='admin_logout'),
 ]

@@ -7,7 +7,7 @@ from .models import ApprovalRequest
 from .forms import AdminUserCreationForm
 from .models import Syllabus
 from .forms import SyllabusUploadForm
-
+from django.contrib.auth import logout
 
 # Ensure only superadmins can access certain views
 def is_superadmin(user):
@@ -96,3 +96,7 @@ def upload_syllabus(request):
 def syllabus_list(request):
     syllabi = Syllabus.objects.all()
     return render(request, "admin_panel/syllabus_list.html", {"syllabi": syllabi})
+
+def admin_logout(request):
+    logout(request)
+    return redirect('admin_login')  # Redirect to the admin login page after logout

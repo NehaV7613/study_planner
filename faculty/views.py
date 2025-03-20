@@ -1,70 +1,177 @@
-from django.shortcuts import render, redirect
-from .models import Task, Remark, Deadline  # Import the models
-from .forms import TaskForm, RemarkForm, DeadlineForm  # Import the forms
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
+from django.utils.timezone import now, make_aware
+from datetime import datetime
+from django.contrib.auth import login, logout
+from .models import Task, Deadline, Remark
+from users.models import CustomUser
+from student.models import StudentProgress
+from django.contrib.auth.decorators import login_required
 
-def create_task(request):
-    if request.user.is_authenticated and request.user.role == 'teacher':  # Check if the user is a faculty member
-        if request.method == 'POST':
-            form = TaskForm(request.POST)
-            if form.is_valid():
-                form.instance.faculty = request.user  # Automatically assign the logged-in faculty as the creator
-                form.save()
-                return redirect('faculty_dashboard')  # Redirect to dashboard after saving
-        else:
-            form = TaskForm()
-        return render(request, 'faculty/create_task.html', {'form': form})
-    else:
-        return redirect('users:login')  # Redirect to login in users app
 
+@login_required
 def faculty_dashboard(request):
-    if request.user.is_authenticated and request.user.role == 'teacher':  # Check if the user is a faculty member
-        tasks = Task.objects.filter(faculty=request.user)
-        deadlines = Deadline.objects.filter(task__faculty=request.user)  # All deadlines for tasks assigned by the logged-in faculty
-        remarks = Remark.objects.filter(task__faculty=request.user)
-        return render(request, 'faculty/faculty_dashboard.html', {'tasks': tasks, 'deadlines': deadlines, 'remarks': remarks})
-    else:
-        return redirect('users:login')  # Redirect to login in users app
+    """Faculty dashboard displaying tasks, deadlines, and remarks"""
+
+    if request.user.role != 'teacher':
+        return redirect("faculty_login")
+
+    tasks = Task.objects.filter(faculty=request.user)
+
+    # Get upcoming deadlines
+    deadlines = Deadline.objects.filter(
+        task__faculty=request.user, due_date__gte=now()
+    ).prefetch_related('students')
+
+    remarks = Remark.objects.filter(faculty=request.user).select_related('student')
+
+    students = CustomUser.objects.filter(role='student')
+
+    # ✅ Get all unreviewed student progress submissions
+    pending_reviews = StudentProgress.objects.filter(
+        task__faculty=request.user, reviewed_by_faculty=False
+    ).select_related('student', 'task')
+
+    # ✅ Get all reviewed submissions
+    reviewed_submissions = StudentProgress.objects.filter(
+        task__faculty=request.user, reviewed_by_faculty=True
+    ).select_related('student', 'task')
+
+    return render(request, 'faculty/faculty_dashboard.html', {
+        'tasks': tasks,
+        'deadlines': deadlines,
+        'remarks': remarks,
+        'students': students,
+        'pending_reviews': pending_reviews,
+        'reviewed_submissions': reviewed_submissions  # ✅ Pass reviewed submissions
+    })
 
 
-from .models import Deadline, Task
-from users.models import CustomUser  # Assuming your user model is named `CustomUser`
+def add_task(request):
+    """Faculty adds a task manually"""
+    if request.method == "POST":
+        title = request.POST.get("title", "").strip()
+        description = request.POST.get("description", "").strip()
+
+        if not title:
+            messages.error(request, "Task title cannot be empty!")
+            return redirect("faculty_dashboard")
+
+        Task.objects.create(faculty=request.user, title=title, description=description)
+        messages.success(request, "Task added successfully!")
+
+    return redirect("faculty_dashboard")
 
 def add_deadline(request):
-    if request.method == 'POST':
-        task_id = request.POST.get('task')
-        student_id = request.POST.get('student')
-        due_date = request.POST.get('due_date')
+    """Faculty assigns a deadline to a task for multiple students"""
+    if request.method == "POST":
+        task_id = request.POST.get("task")
+        student_ids = request.POST.getlist("students")
+        due_date_str = request.POST.get("due_date")
 
         try:
-            task = Task.objects.get(id=task_id)
-            student = CustomUser.objects.get(id=student_id)
+            due_date = make_aware(datetime.strptime(due_date_str, "%Y-%m-%dT%H:%M"))
+        except ValueError:
+            messages.error(request, "Invalid date format!")
+            return redirect("faculty_dashboard")
 
-            Deadline.objects.create(task=task, student=student, due_date=due_date)
-            return redirect('faculty_dashboard')  # Redirect after successful submission
+        task = get_object_or_404(Task, id=task_id, faculty=request.user)
+        students = CustomUser.objects.filter(id__in=student_ids, role="student")
 
-        except (Task.DoesNotExist, CustomUser.DoesNotExist):
-            return render(request, 'faculty/faculty_dashboard.html', {
-                'error': 'Invalid task or student selection.'
-            })
+        if not students.exists():
+            messages.error(request, "No valid students selected!")
+            return redirect("faculty_dashboard")
 
-    return redirect('faculty_dashboard')
+        deadline = Deadline.objects.create(task=task, due_date=due_date)
+        deadline.students.set(students)
+        messages.success(request, "Deadline added successfully!")
+
+    return redirect("faculty_dashboard")
 
 def add_remark(request):
-    if request.method == 'POST':
-        task_id = request.POST.get('task')
-        student_id = request.POST.get('student')
-        remark_text = request.POST.get('remark')
+    """Faculty adds a remark for an **individual** student"""
+    if request.method == "POST":
+        task_id = request.POST.get("task")
+        student_id = request.POST.get("student")
+        remark_text = request.POST.get("remark", "").strip()
 
-        try:
-            task = Task.objects.get(id=task_id)
-            student = CustomUser.objects.get(id=student_id)
+        if not remark_text:
+            messages.error(request, "Remark cannot be empty!")
+            return redirect("faculty_dashboard")
 
-            Remark.objects.create(task=task, student=student, remark=remark_text)
-            return redirect('faculty_dashboard')  # Redirect to the dashboard
+        task = get_object_or_404(Task, id=task_id, faculty=request.user)
+        student = get_object_or_404(CustomUser, id=student_id, role="student")
 
-        except (Task.DoesNotExist, CustomUser.DoesNotExist):
-            return render(request, 'faculty/faculty_dashboard.html', {
-                'error': 'Invalid task or student selection.'
-            })
+        remark = Remark.objects.create(task=task, faculty=request.user, student=student, remark=remark_text)
+        messages.success(request, f"Remark added for {student.name}!")
 
-    return redirect('faculty_dashboard')
+    return redirect("faculty_dashboard")
+
+def faculty_login(request):
+    """Handles faculty login"""
+    if request.method == "POST":
+        faculty_id = request.POST.get("faculty_id")
+        password = request.POST.get("password")
+
+        user = CustomUser.objects.filter(faculty_id=faculty_id, role="teacher").first()
+
+        if user and user.check_password(password):
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            return redirect("faculty_dashboard")
+
+        messages.error(request, "Invalid faculty credentials!")
+    
+    return render(request, "faculty/faculty_login.html")
+
+
+def faculty_logout(request):
+    """Logs out faculty members"""
+    logout(request)
+    messages.success(request, "You have been logged out successfully.")
+    return redirect("faculty_login")
+
+
+def upcoming_deadlines(request):
+    """Fetch upcoming tasks that have a due date in the future"""
+    tasks = Task.objects.filter(due_date__gte=now()).order_by("due_date")  # Adjust if due_date exists
+
+    return render(request, "faculty/upcoming_deadlines.html", {"tasks": tasks})
+
+@login_required
+def review_submission_page(request, progress_id):
+    """Faculty reviews a student's submission before marking it as reviewed."""
+
+    if not progress_id:
+        messages.error(request, "Invalid submission ID.")
+        return redirect("faculty_dashboard")
+
+    submission = get_object_or_404(StudentProgress, id=progress_id)
+
+    if request.user.role != 'teacher':
+        messages.error(request, "You are not authorized to review submissions.")
+        return redirect("faculty_dashboard")  
+
+    return render(request, "faculty/review_submission.html", {"submission": submission})
+
+
+@login_required
+def mark_submission_reviewed(request, progress_id):
+    """Mark a student submission as reviewed"""
+
+    if not progress_id:
+        messages.error(request, "Invalid submission ID.")
+        return redirect("faculty_dashboard")
+
+    submission = get_object_or_404(StudentProgress, id=progress_id)
+
+    if request.user.role != 'teacher':
+        messages.error(request, "You are not authorized to review submissions.")
+        return redirect("faculty_dashboard")  
+
+    # Mark as reviewed
+    submission.reviewed_by_faculty = True
+    submission.reviewed_at = now()  # Store review timestamp
+    submission.save()
+
+    messages.success(request, "Submission reviewed successfully!")
+    return redirect("faculty_dashboard")  

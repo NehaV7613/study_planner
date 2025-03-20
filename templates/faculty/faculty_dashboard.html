@@ -1,13 +1,16 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Faculty Dashboard</title>
+  
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  
   <!-- Custom CSS -->
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="{% static 'assets/css/faculty_dashboard.css' %}">
 </head>
 <body>
   <div class="container-fluid">
@@ -18,42 +21,71 @@
 
     <!-- Main Content -->
     <div class="row mt-4">
-      <!-- Left Sidebar: Post Deadlines and Remarks -->
+      <!-- Left Sidebar: Manage Tasks, Deadlines, and Remarks -->
       <div class="col-md-4">
-        <!-- Post Deadlines Section -->
+        
+        <!-- Add Tasks Section -->
         <div class="card mb-4">
-          <div class="card-header bg-success text-white">
-            <h5 class="card-title mb-0">Post Deadlines</h5>
+          <div class="card-header bg-secondary text-white">
+            <h5 class="card-title mb-0">Add Task</h5>
           </div>
           <div class="card-body">
-            <form method="post" action="{% url 'add_deadline' %}">
+            <form method="post" action="{% url 'add_task' %}">
               {% csrf_token %}
               <div class="mb-3">
-                <label for="task" class="form-label">Task</label>
-                <select class="form-select" id="task" name="task" required>
-                  <option value="" selected disabled>Select a task</option>
-                  {% for task in tasks %}
-                    <option value="{{ task.id }}">{{ task.name }}</option>
-                  {% endfor %}
-                </select>
+                <label for="title" class="form-label">Task Title</label>
+                <input type="text" class="form-control" id="title" name="title" placeholder="Enter task title" required>
               </div>
               <div class="mb-3">
-                <label for="student" class="form-label">Student</label>
-                <select class="form-select" id="student" name="student" required>
-                  <option value="" selected disabled>Select a student</option>
-                  {% for student in students %}
-                    <option value="{{ student.id }}">{{ student.username }}</option>
-                  {% endfor %}
-                </select>
+                <label for="description" class="form-label">Description (Optional)</label>
+                <textarea class="form-control" id="description" name="description" placeholder="Enter task description"></textarea>
               </div>
-              <div class="mb-3">
-                <label for="due_date" class="form-label">Due Date</label>
-                <input type="datetime-local" class="form-control" id="due_date" name="due_date" required>
-              </div>
-              <button type="submit" class="btn btn-success">Add Deadline</button>
+              <button type="submit" class="btn btn-secondary w-100">Add Task</button>
             </form>
           </div>
         </div>
+        
+<!-- Post Deadlines Section -->
+<div class="card mb-4">
+  <div class="card-header bg-success text-white">
+    <h5 class="card-title mb-0">Post Deadlines</h5>
+  </div>
+  <div class="card-body">
+    <form method="post" action="{% url 'add_deadline' %}">
+      {% csrf_token %}
+      
+      <div class="mb-3">
+        <label for="task" class="form-label">Task</label>
+        <select class="form-select" id="task" name="task" required>
+          <option value="" selected disabled>Select a task</option>
+          {% for task in tasks %}
+            <option value="{{ task.id }}">{{ task.title }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      
+      <div class="mb-3">
+        <label class="form-label">Assign to Students</label>
+        <div class="border rounded p-2" style="max-height: 200px; overflow-y: auto;">
+          {% for student in students %}
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="student{{ student.id }}" name="students" value="{{ student.id }}">
+              <label class="form-check-label" for="student{{ student.id }}">{{ student.username }}</label>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="due_date" class="form-label">Due Date</label>
+        <input type="datetime-local" class="form-control" id="due_date" name="due_date" required>
+      </div>
+
+      <button type="submit" class="btn btn-success w-100">Add Deadline</button>
+    </form>
+  </div>
+</div>
+
 
         <!-- Post Remarks Section -->
         <div class="card mb-4">
@@ -64,28 +96,31 @@
             <form method="post" action="{% url 'add_remark' %}">
               {% csrf_token %}
               <div class="mb-3">
-                <label for="task" class="form-label">Task</label>
-                <select class="form-select" id="task" name="task" required>
+                <label for="task_remark" class="form-label">Task</label>
+                <select class="form-select" id="task_remark" name="task" required>
                   <option value="" selected disabled>Select a task</option>
                   {% for task in tasks %}
-                    <option value="{{ task.id }}">{{ task.name }}</option>
+                    <option value="{{ task.id }}">{{ task.title }}</option>
                   {% endfor %}
                 </select>
               </div>
+              
               <div class="mb-3">
-                <label for="student" class="form-label">Student</label>
-                <select class="form-select" id="student" name="student" required>
+                <label for="student_remark" class="form-label">Student</label>
+                <select class="form-select" id="student_remark" name="student" required>
                   <option value="" selected disabled>Select a student</option>
                   {% for student in students %}
                     <option value="{{ student.id }}">{{ student.username }}</option>
                   {% endfor %}
                 </select>
               </div>
+
               <div class="mb-3">
                 <label for="remark" class="form-label">Remarks</label>
                 <textarea class="form-control" id="remark" name="remark" rows="3" required></textarea>
               </div>
-              <button type="submit" class="btn btn-info">Submit Remarks</button>
+
+              <button type="submit" class="btn btn-info w-100">Submit Remarks</button>
             </form>
           </div>
         </div>
@@ -98,13 +133,14 @@
             <h5 class="card-title mb-0">Dashboard</h5>
           </div>
           <div class="card-body">
+            
             <!-- Upcoming Deadlines -->
             <h6 class="text-primary">Upcoming Deadlines</h6>
             <ul class="list-group mb-4">
               {% for deadline in deadlines %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                  {{ deadline.task.name }} - {{ deadline.student.username }} (Due: {{ deadline.due_date|date:"Y-m-d H:i" }})
-                  <span class="badge bg-{{ deadline.status|lower }}">{{ deadline.status }}</span>
+                  {{ deadline.task.title }} - Due: {{ deadline.due_date|date:"Y-m-d H:i" }}
+                  <span class="badge bg-danger">{{ deadline.students.count }} student(s)</span>
                 </li>
               {% empty %}
                 <li class="list-group-item">No deadlines found.</li>
@@ -125,7 +161,7 @@
                 {% for remark in remarks %}
                   <tr>
                     <td>{{ remark.student.username }}</td>
-                    <td>{{ remark.task.name }}</td>
+                    <td>{{ remark.task.title }}</td>
                     <td>{{ remark.remark }}</td>
                   </tr>
                 {% empty %}
@@ -135,13 +171,107 @@
                 {% endfor %}
               </tbody>
             </table>
+
+            <!-- Logout Button -->
+            <div class="text-center mt-3">
+              <a href="{% url 'faculty_logout' %}" class="btn btn-danger">Logout</a>
+            </div>
+
           </div>
+
+
+<div>
+
+
+
+</div>
+
+<div>
+  <h2>Pending Submissions for Review</h2>
+
+  <table border="1" style="width: 100%; border-collapse: collapse; text-align: center;">
+      <thead>
+          <tr style="background-color: #f2f2f2;">
+              <th>Student</th>
+              <th>Task</th>
+              <th>Submission</th>
+              <th>Action</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for progress in pending_reviews %}
+          <tr>
+              <td>{{ progress.student.name }}</td>
+              <td>{{ progress.task.title }}</td>
+              <td>
+                  {% if progress.proof_of_submission %}
+                      <a href="{{ progress.proof_of_submission.url }}" target="_blank">View Proof</a>
+                  {% else %}
+                      No proof submitted
+                  {% endif %}
+              </td>
+              <td>
+                  <a href="{% url 'review_submission_page' progress.id %}">Review</a>
+              </td>
+          </tr>
+          {% empty %}
+          <tr>
+              <td colspan="4" style="text-align: center;">No pending reviews</td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+</div>
+
+<div>
+  <h2>Reviewed Submissions</h2>
+
+<table border="1" style="width: 100%; border-collapse: collapse; text-align: center;">
+    <thead>
+        <tr style="background-color: #f2f2f2;">
+            <th>Student</th>
+            <th>Task</th>
+            <th>Submission</th>
+            <th>Reviewed On</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for progress in reviewed_submissions %}
+        <tr>
+            <td>{{ progress.student.name }}</td>
+            <td>{{ progress.task.title }}</td>
+            <td>
+                {% if progress.proof_of_submission %}
+                    <a href="{{ progress.proof_of_submission.url }}" target="_blank">View Proof</a>
+                {% else %}
+                    No proof submitted
+                {% endif %}
+            </td>
+            <td>
+              {% if progress.reviewed_at %}
+                  {{ progress.reviewed_at|date:"M d, Y H:i" }}
+              {% else %}
+                  Not reviewed yet
+              {% endif %}
+          </td>  <!-- Assuming 'reviewed_at' stores the review timestamp -->
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4" style="text-align: center;">No reviewed submissions yet</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+
+        </div>
+      </div>
+    </div>
+</div>
+
         </div>
       </div>
     </div>
   </div>
-
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

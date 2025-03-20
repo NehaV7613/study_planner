@@ -5,27 +5,21 @@ from .forms import CustomUserCreationForm, CustomAuthenticationForm
 
 # Registration view
 def register(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.is_active = False  # Ensure user is not active until approved
-            user.is_approved = False  # Mark as not approved
+            user.is_approved = False  # User needs admin approval before login
             user.save()
-            
-            # Explicitly specify the default backend for non-admin users
-            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            
-            # Add a success message
-            messages.success(request, 'Registration successful! You are now logged in.')
-            return redirect('index')
+            messages.success(request, "Registration successful! Please wait for admin approval.")
+            return redirect("index")  # Redirect to the homepage after successful registration
         else:
-            return render(request, 'users/register.html', {'form': form, 'errors': form.errors})
+            print(form.errors)  # Debugging errors if form validation fails
+
     else:
         form = CustomUserCreationForm()
-    return render(request, 'users/register.html', {'form': form})
 
-
+    return render(request, "users/register.html", {"form": form})
 # Login view
 def user_login(request):
     if request.method == 'POST':
@@ -49,3 +43,6 @@ def user_logout(request):
 
 def index(request):
     return render(request, 'core/index.html')
+
+def student_login_view(request):
+    return render(request, 'users/student_login.html')  # Update path

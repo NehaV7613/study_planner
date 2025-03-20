@@ -1,0 +1,18 @@
+<h2>Review Submission</h2>
+
+<p><strong>Student:</strong> {{ submission.student.name }}</p>
+<p><strong>Task:</strong> {{ submission.task.title }}</p>
+
+<p><strong>Submission Proof:</strong></p>
+{% if submission.proof_of_submission %}
+    <a href="{{ submission.proof_of_submission.url }}" target="_blank">View Proof</a>
+{% else %}
+    <p>No proof submitted</p>
+{% endif %}
+
+<form method="POST" action="{% url 'mark_submission_reviewed' submission.id %}">
+    {% csrf_token %}
+    <button type="submit">Mark as Reviewed</button>
+</form>
+
+<a href="{% url 'faculty_dashboard' %}">Back to Dashboard</a>
