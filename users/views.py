@@ -21,20 +21,7 @@ def register(request):
 
     return render(request, "users/register.html", {"form": form})
 # Login view
-def user_login(request):
-    if request.method == 'POST':
-        form = CustomAuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            # Explicitly specify the default backend for non-admin users
-            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            messages.success(request, f'Welcome back, {user.username}!')
-            return redirect('index')
-        else:
-            return render(request, 'users/login.html', {'form': form})
-    else:
-        form = CustomAuthenticationForm()
-    return render(request, 'users/login.html', {'form': form})
+
 
 # Logout view (No changes needed here)
 def user_logout(request):

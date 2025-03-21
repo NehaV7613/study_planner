@@ -10,7 +10,7 @@
         body {
             margin: 0;
             font-family: Arial, sans-serif;
-            background: url('studybg.jpeg') no-repeat center center/cover;
+            background: url('{% static "studybg.jpeg" %}') no-repeat center center/cover;
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -110,19 +110,93 @@
             </div>
         </div>
 
-        <div class="timer">30:00</div>
+        <div class="timer" id="timer">30:00</div>
 
         <div class="controls">
-            <button>Start</button>
-            <button>⟳</button>
+            <button id="startPauseBtn">Start</button>
+            <button id="resetBtn">⟳</button>
         </div>
 
         <div class="modes">
-            <div>Short Break</div>
-            <div>Long Break</div>
+            <div id="shortBreak">Short Break</div>
+            <div id="longBreak">Long Break</div>
         </div>
 
         <div class="settings">⚙ Settings</div>
     </div>
+
+    <script>
+        let timeLeft = 30 * 60; // 30 minutes in seconds
+        let timer;
+        let isRunning = false;
+        let currentMode = "work"; // "work", "shortBreak", "longBreak"
+
+        const timerDisplay = document.getElementById("timer");
+        const startPauseBtn = document.getElementById("startPauseBtn");
+        const resetBtn = document.getElementById("resetBtn");
+        const shortBreakBtn = document.getElementById("shortBreak");
+        const longBreakBtn = document.getElementById("longBreak");
+
+        function updateDisplay() {
+            let minutes = Math.floor(timeLeft / 60);
+            let seconds = timeLeft % 60;
+            timerDisplay.innerText = `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+        }
+
+        function startPauseTimer() {
+            if (isRunning) {
+                clearInterval(timer);
+                startPauseBtn.innerText = "Start";
+            } else {
+                timer = setInterval(() => {
+                    if (timeLeft > 0) {
+                        timeLeft--;
+                        updateDisplay();
+                    } else {
+                        clearInterval(timer);
+                        alert("Time's up!");
+                    }
+                }, 1000);
+                startPauseBtn.innerText = "Pause";
+            }
+            isRunning = !isRunning;
+        }
+
+        function resetTimer() {
+            clearInterval(timer);
+            isRunning = false;
+            startPauseBtn.innerText = "Start";
+            if (currentMode === "work") {
+                timeLeft = 30 * 60;
+            } else if (currentMode === "shortBreak") {
+                timeLeft = 5 * 60;
+            } else {
+                timeLeft = 15 * 60;
+            }
+            updateDisplay();
+        }
+
+        function switchMode(mode) {
+            clearInterval(timer);
+            isRunning = false;
+            startPauseBtn.innerText = "Start";
+            if (mode === "shortBreak") {
+                timeLeft = 5 * 60;
+            } else if (mode === "longBreak") {
+                timeLeft = 15 * 60;
+            } else {
+                timeLeft = 30 * 60;
+            }
+            currentMode = mode;
+            updateDisplay();
+        }
+
+        startPauseBtn.addEventListener("click", startPauseTimer);
+        resetBtn.addEventListener("click", resetTimer);
+        shortBreakBtn.addEventListener("click", () => switchMode("shortBreak"));
+        longBreakBtn.addEventListener("click", () => switchMode("longBreak"));
+
+        updateDisplay();
+    </script>
 </body>
 </html>

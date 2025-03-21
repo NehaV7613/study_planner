@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from faculty.models import Deadline, Remark, Task
 from .models import StudentProgress
 from .forms import StudentProgressForm
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import TodoTask
 
 
 @login_required
@@ -111,3 +113,51 @@ def faculty_review_progress(request):
     student_submissions = StudentProgress.objects.all()
 
     return render(request, 'faculty/review_progress.html', {'student_submissions': student_submissions})
+
+
+
+
+@login_required
+def student_tasks(request):
+    """Display the logged-in student's to-do list."""
+    if request.user.role != "student":
+        messages.error(request, "Unauthorized access!")
+        return redirect("student_dashboard")
+
+    tasks = TodoTask.objects.filter(student=request.user).order_by("-created_at")
+    return render(request, "student/to_do.html", {"tasks": tasks})
+
+@login_required
+def student_add_task(request):
+    """Allow students to add tasks to their to-do list."""
+    if request.user.role != "student":
+        messages.error(request, "Unauthorized access!")
+        return redirect("student_dashboard")
+
+    if request.method == "POST":
+        description = request.POST.get("description", "").strip()
+
+        if description:
+            TodoTask.objects.create(description=description, student=request.user)
+            messages.success(request, "Task added successfully!")
+        else:
+            messages.error(request, "Task title cannot be empty!")  # Fixed this error message
+
+    return redirect("student_tasks")  # **Redirects to student to-do list, NOT faculty login**
+
+@login_required
+def student_toggle_task(request, task_id):
+    """Toggle a task's completion status."""
+    task = get_object_or_404(TodoTask, id=task_id, student=request.user)
+    task.completed = not task.completed
+    task.save()
+    messages.success(request, "Task status updated!")
+    return redirect("student_tasks")
+
+@login_required
+def student_delete_task(request, task_id):
+    """Delete a task from the to-do list."""
+    task = get_object_or_404(TodoTask, id=task_id, student=request.user)
+    task.delete()
+    messages.success(request, "Task deleted successfully!")
+    return redirect("student_tasks")

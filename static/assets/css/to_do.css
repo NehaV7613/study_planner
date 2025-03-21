@@ -1,0 +1,27 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.card {
+    margin-top: 20px;
+    border: none;
+    border-radius: 10px;
+}
+
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.completed {
+    text-decoration: line-through;
+    color: #6c757d;
+}
+
+.btn-sm {
+    padding: 5px 10px;
+    font-size: 14px;
+}

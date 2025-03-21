@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils import timezone
+from django.utils.timezone import now
 from users.models import CustomUser
 from faculty.models import Task, Deadline  # Importing Task & Deadline from faculty app
 
@@ -24,3 +24,16 @@ class StudentProgress(models.Model):
 
     def __str__(self):
         return f"Progress by {self.student.name} for {self.task.title}"
+
+class TodoTask(models.Model):
+    student = models.ForeignKey(
+        CustomUser, 
+        on_delete=models.CASCADE, 
+        limit_choices_to={'role': 'student'}
+    )
+    description = models.CharField(max_length=255)
+    completed = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=now)
+
+    def __str__(self):
+        return f"{self.student.name}'s Task: {self.description}" if self.student else self.description
