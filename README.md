@@ -12,16 +12,23 @@ The **Study Planner** is a Django-based web application designed to help student
 - Students can set study goals and track progress.
 - Faculty can assign schedules, post deadlines, and provide remarks on student progress.
 
-### 📂 Syllabus Management
-- Admins can upload and manage syllabus files.
+### 🤖 AI-Powered Personalized Study Planner
+- Generates customized study timetables based on student schedules, priorities, and deadlines.
+- Adapts based on study patterns and progress tracking.
 
-### 🔔 Notifications
-- Alerts for upcoming deadlines and faculty-assigned tasks.
+### 📂 Task & Deadline Management
+- Students can view upcoming deadlines posted by faculty.
+- Students can submit task completion proof files for faculty review.
+- Students can check the status of their submitted tasks (Pending/Reviewed).
+- Faculty can upload tasks and set deadlines for specific students or groups.
+- Faculty can review student submissions and track pending and reviewed tasks.
+- Admin can upload syllabus documents for students.
 
-## 🛠️ Tech Stack
+### 🛠️ Tech Stack
 - **Backend:** Django (Python)
 - **Database:** SQLite (default) - can be replaced with PostgreSQL/MySQL if needed
 - **Frontend:** Django Templates (HTML, CSS, Bootstrap)
+- **AI:** Integrated study planner for personalized schedules
 
 ## 📂 Project Structure
 ```
@@ -66,9 +73,9 @@ python manage.py runserver
 Access the app at **http://127.0.0.1:8000/**
 
 ## 📜 Future Enhancements
-- ✅ AI-based personalized study plan generator
 - 📊 Graphical representation of study progress
 - 🔄 API integration for mobile support
+- 📝 More AI-based enhancements for study suggestions and adaptive planning
 
 ---
 💡 **Contributions & Feedback**
