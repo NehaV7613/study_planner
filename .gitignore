@@ -33,3 +33,4 @@ media/
 .DS_Store
 Thumbs.db
 
+.env

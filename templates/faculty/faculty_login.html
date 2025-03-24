@@ -5,52 +5,128 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Faculty Login</title>
     <style>
+        /* General Styles */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background: linear-gradient(135deg, #fce4ec, #bbdefb); /* Softer pastel gradient */
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            font-family: "Poppins", sans-serif;
             margin: 0;
+            padding: 0 2rem; /* Equal spacing on both sides */
+            box-sizing: border-box;
         }
+
         .login-container {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            width: 300px;
+            background: rgba(255, 255, 255, 0.15); /* Glassmorphism Effect */
+            backdrop-filter: blur(12px);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 380px; /* Ensuring balanced width */
             text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-sizing: border-box; /* Prevents width overflow */
         }
-        .login-container h2 {
-            margin-bottom: 20px;
+
+        h2 {
+            color: #444;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            font-weight: 600;
         }
+
         .input-field {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: 0.3s ease-in-out;
+            outline: none;
+            box-sizing: border-box;
         }
+
+        .input-field:focus {
+            border-color: #ff85a2;
+            box-shadow: 0 0 8px rgba(255, 133, 162, 0.4);
+        }
+
         .btn {
             width: 100%;
-            padding: 10px;
-            background-color: #007bff;
-            color: white;
+            padding: 12px;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
+            font-size: 1rem;
             cursor: pointer;
+            transition: 0.3s;
+            font-weight: 600;
         }
-        .btn:hover {
-            background-color: #0056b3;
+
+        .btn-primary {
+            background: linear-gradient(90deg, #ff85a2, #ffb3c6);
+            color: white;
+            box-shadow: 0 4px 8px rgba(255, 133, 162, 0.3);
         }
-        .error {
-            color: red;
-            margin-bottom: 15px;
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, #ff6b92, #ff9ab6);
+            box-shadow: 0 5px 10px rgba(255, 133, 162, 0.5);
         }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 15px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ff6b92;
+            background: rgba(255, 107, 146, 0.1);
+            border-radius: 8px;
+            text-decoration: none;
+            transition: 0.3s ease-in-out;
+            box-shadow: 0 3px 6px rgba(255, 107, 146, 0.2);
+        }
+        
+        .back-link:hover {
+            background: rgba(255, 107, 146, 0.2);
+            color: #ff3f73;
+            box-shadow: 0 4px 8px rgba(255, 63, 115, 0.3);
+        }
+        
+        /* Message Styling */
+        .message {
+            margin: 12px 0;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
         .success {
-            color: green;
-            margin-bottom: 15px;
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 500px) {
+            body {
+                padding: 0 1.5rem; /* Slightly less padding on smaller screens */
+            }
+
+            .login-container {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -62,7 +138,9 @@
     <!-- Display messages -->
     {% if messages %}
         {% for message in messages %}
-            <p class="{% if message.tags == 'error' %}error{% else %}success{% endif %}">{{ message }}</p>
+            <p class="message {% if message.tags == 'error' %}error{% else %}success{% endif %}">
+                {{ message }}
+            </p>
         {% endfor %}
     {% endif %}
 
@@ -70,10 +148,10 @@
         {% csrf_token %}
         <input type="text" name="faculty_id" class="input-field" placeholder="Faculty ID" required>
         <input type="password" name="password" class="input-field" placeholder="Password" required>
-        <button type="submit" class="btn">Login</button>
+        <button type="submit" class="btn btn-primary">Login</button>
     </form>
 
-    <p><a href="{% url 'student_login' %}">Student Login</a></p>
+    <a href="{% url 'index' %}" class="back-link">Back to Homepage</a>
 </div>
 
 </body>

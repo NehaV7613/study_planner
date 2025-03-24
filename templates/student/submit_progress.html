@@ -1,11 +1,102 @@
-<h2>Submit Progress</h2>
-
-<form method="POST" enctype="multipart/form-data">
-    {% csrf_token %}
-    <div>
-        {{ form.as_p }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit Progress</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f9f6ff, #e8e2ff);
+            color: #5a2d82;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+        }
+        h2 {
+            color: #8e44ad;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+        form div {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        form label {
+            font-weight: 500;
+            color: #5a2d82;
+            font-size: 15px;
+            display: block;
+            margin-bottom: 5px;
+        }
+        form input, form textarea, form select {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #8e44ad;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #5a2d82;
+            background-color: #fbf8ff;
+            outline: none;
+            transition: 0.3s;
+        }
+        form input:focus, form textarea:focus, form select:focus {
+            border-color: #7d3c98;
+            box-shadow: 0 0 10px rgba(125, 60, 152, 0.3);
+        }
+        form button {
+            background: linear-gradient(90deg, #8e44ad, #9b59b6);
+            color: #ffffff;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            width: 100%;
+            transition: 0.3s;
+        }
+        form button:hover {
+            background: linear-gradient(90deg, #7d3c98, #8e44ad);
+            box-shadow: 0 4px 12px rgba(142, 68, 173, 0.3);
+        }
+        a {
+            display: block;
+            margin-top: 15px;
+            color: #5a2d82;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        a:hover {
+            color: #8e44ad;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Submit Progress</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div>
+                {{ form.as_p }}
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+        <a href="{% url 'student_dashboard' %}">Back to Dashboard</a>
     </div>
-    <button type="submit">Submit</button>
-</form>
-
-<a href="{% url 'student_dashboard' %}">Back to Dashboard</a>
+</body>
+</html>

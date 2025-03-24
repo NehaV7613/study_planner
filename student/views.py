@@ -8,6 +8,7 @@ from .models import StudentProgress
 from .forms import StudentProgressForm
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import TodoTask
+from admin_panel.models import Syllabus
 
 
 @login_required
@@ -27,14 +28,26 @@ def student_dashboard(request):
     
     # Fetch student progress
     student_progress = StudentProgress.objects.filter(student=student)
+    
+    # ✅ Initialize syllabi properly
+    try:
+        syllabi = Syllabus.objects.all()  # Fetch syllabus entries
+    except Syllabus.DoesNotExist:
+        syllabi = None  # Handle case where no syllabus is found
 
     # Pass all data to the template
     context = {
         'deadlines': deadlines,
         'remarks': remarks,
         'student_progress': student_progress,  # Ensure progress is passed!
+        'syllabi': syllabi, 
     }
-
+    
+    
+    
+    # Debugging output to check if syllabi exists
+    print("Syllabus Data Sent to Template:", syllabi)
+     
     return render(request, 'student/student_dashboard.html', context)
 
 

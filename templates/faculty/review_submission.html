@@ -1,18 +1,110 @@
-<h2>Review Submission</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Submission</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom right, #f3e5f5, #e1bee7);
+            color: #4a148c;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            width: 420px;
+        }
+        h2 {
+            color: #7b1fa2;
+            margin-bottom: 15px;
+        }
+        .submission-details p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+        .submission-details strong {
+            color: #6a1b9a;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .button {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+            transition: 0.3s ease;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+        .proof-link {
+            background-color: #6a1b9a;
+            color: white;
+        }
+        .proof-link:hover {
+            background-color: #4a148c;
+        }
+        .review-button {
+            background-color: #512da8;
+            color: white;
+        }
+        .review-button:hover {
+            background-color: #311b92;
+        }
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            color: #6a1b9a;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .back-link:hover {
+            color: #512da8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Review Submission</h2>
 
-<p><strong>Student:</strong> {{ submission.student.name }}</p>
-<p><strong>Task:</strong> {{ submission.task.title }}</p>
+        <div class="submission-details">
+            <p><strong>Student:</strong> {{ submission.student.name }}</p>
+            <p><strong>Task:</strong> {{ submission.task.title }}</p>
 
-<p><strong>Submission Proof:</strong></p>
-{% if submission.proof_of_submission %}
-    <a href="{{ submission.proof_of_submission.url }}" target="_blank">View Proof</a>
-{% else %}
-    <p>No proof submitted</p>
-{% endif %}
+            <p><strong>Submission Proof:</strong></p>
+            <div class="button-group">
+                {% if submission.proof_of_submission %}
+                    <a href="{{ submission.proof_of_submission.url }}" target="_blank" class="button proof-link">View Proof</a>
+                {% else %}
+                    <p>No proof submitted</p>
+                {% endif %}
 
-<form method="POST" action="{% url 'mark_submission_reviewed' submission.id %}">
-    {% csrf_token %}
-    <button type="submit">Mark as Reviewed</button>
-</form>
+                <form method="POST" action="{% url 'mark_submission_reviewed' submission.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="button review-button">Mark as Reviewed</button>
+                </form>
+            </div>
+        </div>
 
-<a href="{% url 'faculty_dashboard' %}">Back to Dashboard</a>
+        <a href="{% url 'faculty_dashboard' %}" class="back-link">Back to Dashboard</a>
+    </div>
+</body>
+</html>

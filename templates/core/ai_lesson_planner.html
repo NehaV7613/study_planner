@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Lesson Planner</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .planner-container {
+            max-width: 700px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 50px auto;
+        }
+        h2 {
+            text-align: center;
+            color: #007bff;
+        }
+        label {
+            font-weight: bold;
+        }
+        button {
+            width: 100%;
+        }
+        pre {
+            background: #f1f1f1;
+            padding: 15px;
+            border-radius: 5px;
+            white-space: pre-wrap;
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="planner-container">
+        <h2>📝 AI Lesson Planner</h2>
+
+        {% if error %}
+            <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="subject">📚 Subject:</label>
+                <input type="text" id="subject" name="subject" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="topic">🔍 Topic:</label>
+                <input type="text" id="topic" name="topic" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="grade">🎓 Grade:</label>
+                <input type="text" id="grade" name="grade" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="duration">⏳ Duration:</label>
+                <input type="text" id="duration" name="duration" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="learning_objectives">🎯 Learning Objectives:</label>
+                <textarea id="learning_objectives" name="learning_objectives" class="form-control" rows="3" required></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="customization">🎨 Customization (optional):</label>
+                <textarea id="customization" name="customization" class="form-control" rows="2"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">🚀 Generate Lesson Plan</button>
+        </form>
+
+        {% if lesson_plan %}
+            <h3 class="mt-4">📜 Generated Lesson Plan:</h3>
+            <pre>{{ lesson_plan }}</pre>
+            <a href="{% url 'index' %}" class="back-link btn btn-link">🏠 Back to Homepage</a>
+        {% endif %}
+    </div>
+</div>
+
+</body>
+</html>

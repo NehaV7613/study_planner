@@ -8,21 +8,22 @@
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'assets/css/st_dash.css' %}">
+  
 </head>
 <body>
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Student Progress Tracker</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link active" href="#">To-Do List</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Progress</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Deadlines</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Syllabus</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'student_tasks' %}">To-Do List</a></li>
+          <li class="nav-item"><a class="nav-link" href="#progress-section">Progress</a></li>
+          <li class="nav-item"><a class="nav-link" href="#deadlines-section">Deadlines</a></li>
+          <li class="nav-item"><a class="nav-link" href="#syllabus-section">Syllabus</a></li>
         </ul>
       </div>
     </div>
@@ -30,16 +31,17 @@
 
   <!-- User Greeting Section -->
   <div class="container mt-4">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="d-flex align-items-center">
-          <img src="{% static 'assets/images/study.jpg' %}" alt="User Image" class="rounded-circle me-3">
+    <div class="user-greeting">
+      <!-- Large Square Image -->
+      <img src="{% static 'assets/images/study.jpg' %}" alt="User Image" class="user-image">
+      <!-- Welcome Message and Quote -->
+      <div class="welcome-message">
+        <div class="welcome-content">
+          <h4>Welcome, {{ request.user.name }}!</h4>
         </div>
-      </div>
-      <div class="col-md-6">
-        <div class="thought-cloud p-4">
-          <p id="quote-text" class="mb-0">"Success is the sum of small efforts, repeated day in and day out."</p>
-          <button class="btn btn-sm btn-outline-secondary mt-2" onclick="generateQuote()">Generate Quote</button>
+        <div class="thought-cloud">
+          <p id="quote-text">"Don't watch the clock; do what it does. Keep going."</p>
+          <button class="btn btn-sm btn-outline-secondary" onclick="generateQuote()">Generate Quote</button>
         </div>
       </div>
     </div>
@@ -66,119 +68,147 @@
           </div>
         </div>
       </div>
-      <a href="{% url 'student_logout' %}">Logout</a>
-
+      <div class="col-md-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">Logout</h5>
+            <p class="card-text">Log out of your account.</p>
+            <a href="{% url 'student_logout' %}" class="btn btn-danger">Logout</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- New Deadlines & Remarks Section -->
-  <div class="container mt-4">
+  <!-- Deadlines & Remarks Section -->
+  <div class="container mt-4" id="deadlines-section">
     <div class="row">
-      <!-- Deadlines -->
       <div class="col-md-6">
         <div class="card">
           <div class="card-header bg-warning">Upcoming Deadlines</div>
           <div class="card-body">
-              {% for deadline in deadlines %}
-                  <div class="deadline-entry">
-                      <strong>{{ deadline.task.title }}</strong> - {{ deadline.task.description }}
-                      <br>
-                      (Due: {{ deadline.due_date }})
-                  </div>
-              {% empty %}
-                  <p>No upcoming deadlines.</p>
-              {% endfor %}
+            {% for deadline in deadlines %}
+              <div class="deadline-entry">
+                <strong>{{ deadline.task.title }}</strong> - {{ deadline.task.description }}
+                <br>
+                (Due: {{ deadline.due_date }})
+              </div>
+            {% empty %}
+              <p>No upcoming deadlines.</p>
+            {% endfor %}
           </div>
-      </div>
-      
         </div>
       </div>
-
-      <!-- Remarks -->
       <div class="col-md-6">
         <div class="card">
           <div class="card-header bg-info">Faculty Remarks</div>
           <div class="card-body">
-              <table class="table">
-                  <thead>
-                      <tr>
-                          <th>Task</th>
-                          <th>Remarks</th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      {% for remark in remarks %}
-                          <tr>
-                              <td>{{ remark.task.title }}</td>
-                              <td>{{ remark.remark }}</td>
-                          </tr>
-                      {% empty %}
-                          <tr><td colspan="2">No remarks available.</td></tr>
-                      {% endfor %}
-                  </tbody>
-              </table>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Task</th>
+                  <th>Remarks</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for remark in remarks %}
+                  <tr>
+                    <td>{{ remark.task.title }}</td>
+                    <td>{{ remark.remark }}</td>
+                  </tr>
+                {% empty %}
+                  <tr><td colspan="2">No remarks available.</td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
           </div>
-      </div>
-      
         </div>
       </div>
     </div>
   </div>
 
-  <h3>Student Progress</h3>
-
-<!-- Button to Submit Progress -->
-<a href="{% url 'submit_progress' %}" style="display: inline-block; padding: 10px 15px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px; margin-bottom: 10px;">
-    Submit Progress
-</a>
-
-<table border="1" style="width: 100%; border-collapse: collapse; text-align: center;">
-    <thead>
-        <tr style="background-color: #f2f2f2;">
-            <th style="padding: 8px;">Task</th>
-            <th style="padding: 8px;">Proof of Submission</th>
-            <th style="padding: 8px;">Delay Reason</th>
-            <th style="padding: 8px;">Submitted Late?</th>
-            <th style="padding: 8px;">Reviewed by Faculty</th>
+  <!-- Progress Section -->
+  <div class="container mt-4" id="progress-section">
+    <h3>Student Progress</h3>
+    <p>Track your progress on various tasks.</p>
+    <table class="progress-table">
+      <thead>
+        <tr>
+          <th>Task</th>
+          <th>Proof of Submission</th>
+          <th>Delay Reason</th>
+          <th>Submitted Late?</th>
+          <th>Reviewed by Faculty</th>
         </tr>
-    </thead>
-    <tbody>
+      </thead>
+      <tbody>
         {% for progress in student_progress %}
-        <tr>
-            <td style="padding: 8px;">{{ progress.task.title }}</td>
-            <td style="padding: 8px;">
-                {% if progress.proof_of_submission %}
-                    <a href="{{ progress.proof_of_submission.url }}" target="_blank">View Proof</a>
-                {% else %}
-                    No proof submitted
-                {% endif %}
+          <tr>
+            <td>{{ progress.task.title }}</td>
+            <td>
+              {% if progress.proof_of_submission %}
+                <a href="{{ progress.proof_of_submission.url }}" target="_blank">View Proof</a>
+              {% else %}
+                No proof submitted
+              {% endif %}
             </td>
-            <td style="padding: 8px;">{{ progress.delay_reason|default:"N/A" }}</td>
-            <td style="padding: 8px;">
-                {% if progress.submitted_late %}
-                    <span style="color: red; font-weight: bold;">Yes</span>
-                {% else %}
-                    <span style="color: green; font-weight: bold;">No</span>
-                {% endif %}
+            <td>{{ progress.delay_reason|default:"N/A" }}</td>
+            <td>
+              {% if progress.submitted_late %}
+                <span style="color: red; font-weight: bold;">Yes</span>
+              {% else %}
+                <span style="color: green; font-weight: bold;">No</span>
+              {% endif %}
             </td>
-            <td style="padding: 8px;">
-                {% if progress.reviewed_by_faculty %}
-                    <span style="color: green; font-weight: bold;">Reviewed</span>
-                {% else %}
-                    <span style="color: red; font-weight: bold;">Pending</span>
-                {% endif %}
+            <td>
+              {% if progress.reviewed_by_faculty %}
+                <span style="color: green; font-weight: bold;">Reviewed</span>
+              {% else %}
+                <span style="color: red; font-weight: bold;">Pending</span>
+              {% endif %}
             </td>
-        </tr>
+          </tr>
         {% empty %}
-        <tr>
-            <td colspan="5" style="text-align:center; padding: 8px; color: gray;">No progress submitted yet.</td>
-        </tr>
+          <tr>
+            <td colspan="5" style="text-align:center; color: gray;">No progress submitted yet.</td>
+          </tr>
         {% endfor %}
-    </tbody>
-</table>
+      </tbody>
+    </table>
+    <br>
+    <a href="{% url 'submit_progress' %}" class="btn btn-success mb-3">Submit Progress</a>
+  </div>
 
-  
-
+  <!-- Syllabus Section -->
+  <div class="container mt-4" id="syllabus-section">
+    <h2>📚 Syllabus List</h2>
+    {% if syllabi %}
+      <table class="syllabus-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Course Code</th>
+            <th>Download</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for syllabus in syllabi %}
+            <tr>
+              <td>{{ forloop.counter }}</td>
+              <td>{{ syllabus.title }}</td>
+              <td>{{ syllabus.course_code }}</td>
+              <td>
+                <a href="{{ syllabus.syllabus_file.url }}" class="btn btn-primary btn-sm" download>📥 Download</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="alert alert-warning text-center">⚠ No syllabus available at the moment.</p>
+    {% endif %}
+  </div>
 
   <!-- JavaScript for Random Quotes -->
   <script>
