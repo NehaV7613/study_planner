@@ -1,12 +1,12 @@
-/* Custom Styles - Soft Pastel Theme */
+/* Custom Styles - Modern & Professional Theme */
 html, body {
   height: 100%;
   width: 100%;
   margin: 0;
   padding: 0;
-  font-family: 'Poppins', sans-serif;
-  background-color: #FAF3E0; /* Light Cream */
-  color: #444;
+  font-family: 'Inter', sans-serif;
+  background-color: #F4F7F9; /* Soft Grayish Blue */
+  color: #333;
   line-height: 1.6;
 }
 
@@ -15,78 +15,78 @@ html, body {
   margin: auto;
   padding: 25px;
   background-color: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 /* Header */
 header {
   margin-bottom: 2rem;
-  background: linear-gradient(135deg, #E3C4FF, #AEE6C2); /* Soft Lavender to Mint Green */
-  color: #333;
-  padding: 1.8rem;
-  border-radius: 16px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #B4CDED, #A7D7C5); /* Soft Blue to Mint Green */
+  color: #222;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   font-weight: 600;
 }
 
 /* Cards */
 .card {
   border: none;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
-  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
   background: #ffffff;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  margin-bottom: 1.8rem;
-  border: 1px solid #D8BFD8; /* Lavender border */
+  margin-bottom: 1.5rem;
+  border: 1px solid #C4D7ED; /* Soft Blue border */
 }
 
 .card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 7px 18px rgba(0, 0, 0, 0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .card-header {
   font-weight: 600;
-  background: linear-gradient(135deg, #B0D9FF, #E3C4FF); /* Gradient Baby Blue to Lavender */
-  color: #333;
-  border-radius: 16px 16px 0 0;
-  padding: 1.2rem 1.5rem;
+  background: linear-gradient(135deg, #C4D7ED, #A7D7C5); /* Gradient Blue to Mint */
+  color: #222;
+  border-radius: 12px 12px 0 0;
+  padding: 1rem 1.2rem;
 }
 
 /* List Group */
 .list-group-item {
-  margin-bottom: 0.6rem;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #E3C4FF, #D8BFD8); /* Softer Lavender */
-  border: 1px solid #D8BFD8;
+  margin-bottom: 0.5rem;
+  border-radius: 8px;
+  background: #E8EFF7; /* Soft Blue-Gray */
+  border: 1px solid #C4D7ED;
   transition: background 0.3s ease-in-out, transform 0.2s ease;
-  padding: 0.85rem 1.3rem;
+  padding: 0.8rem 1.2rem;
 }
 
 .list-group-item:hover {
-  background: #D8B6E8;
-  transform: translateX(6px);
+  background: #D4E2F2;
+  transform: translateX(5px);
 }
 
 /* Tables */
 .table {
   width: 100%;
   border-collapse: separate;
-  border-spacing: 0 8px;
+  border-spacing: 0 10px;
 }
 
 .table thead th {
-  background: linear-gradient(135deg, #D8BFD8, #B0D9FF); /* Gradient Lavender to Baby Blue */
+  background: linear-gradient(135deg, #A7D7C5, #B4CDED);
   color: #000;
   font-weight: 700;
-  padding: 0.6rem 1rem;
+  padding: 0.8rem 1.2rem;
   text-align: left;
   border-radius: 8px;
   border-right: 2px solid #fff;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
 }
 
 .table thead th:last-child {
@@ -94,19 +94,19 @@ header {
 }
 
 .table tbody td {
-  padding: 0.6rem 1rem;
+  padding: 0.8rem 1.2rem;
   text-align: left;
 }
 
 .table tbody tr:hover {
-  background-color: #f7f8fa;
+  background-color: #f0f3f7;
 }
 
 /* Buttons */
 .btn {
   font-weight: 500;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   padding: 10px 16px;
   transition: all 0.3s ease;
   color: #ffffff;
@@ -114,64 +114,52 @@ header {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #7EA1FF, #5D8DEE);
-  margin-right: 10px;
+  background: linear-gradient(135deg, #6D98D9, #4F82C3);
 }
 
 .btn-primary:hover {
-  background: #5D8DEE;
+  background: #4F82C3;
 }
 
 .btn-secondary {
-  background: linear-gradient(135deg, #C48FFF, #B376E3);
+  background: linear-gradient(135deg, #7FB4A8, #5F9489);
 }
 
 .btn-secondary:hover {
-  background: #B376E3;
-}
-
-.btn-danger {
-  background: linear-gradient(135deg, #FF9A9A, #E67373);
-  color: #333;
-  margin-bottom: 15px;
-}
-
-.btn-danger:hover {
-  background: #E67373;
+  background: #5F9489;
 }
 
 /* Custom Button Colors */
 .btn-success {
-  background: linear-gradient(135deg, #A1E3A1, #74C674);
+  background: linear-gradient(135deg, #8DCB8D, #6DA86D);
 }
 
 .btn-success:hover {
-  background: #74C674;
+  background: #6DA86D;
 }
 
 .btn-info {
-  background: linear-gradient(135deg, #74C6E6, #50A7C2);
+  background: linear-gradient(135deg, #7FB4E8, #5D92C4);
 }
 
 .btn-info:hover {
-  background: #50A7C2;
+  background: #5D92C4;
 }
 
 /* Logout Button */
 .btn-logout {
-  background: linear-gradient(135deg, #9D7D7D, #826363);
+  background: linear-gradient(135deg, #6B798F, #536373);
   color: #ffffff;
-  margin-bottom: 30px;
 }
 
 .btn-logout:hover {
-  background: #826363;
+  background: #536373;
 }
 
 /* Button animation */
 .btn:hover {
   transform: translateY(-3px);
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
 }
 
 a:hover, .btn:hover {
@@ -184,35 +172,35 @@ input[type="text"], input[type="email"], input[type="password"], textarea, selec
   width: 100%;
   padding: 12px;
   margin: 10px 0;
-  border: 2px solid #D8BFD8;
-  border-radius: 10px;
+  border: 2px solid #C4D7ED;
+  border-radius: 8px;
   font-size: 1rem;
-  background: #FFF5FA;
+  background: #F9FBFD;
   transition: all 0.3s ease-in-out;
 }
 
 input:focus, textarea:focus, select:focus {
   outline: none;
-  border-color: #B376E3;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  border-color: #6D98D9;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 }
 
 label {
   font-weight: 500;
-  color: #555;
+  color: #444;
 }
 
 /* Form Submit Button */
 .btn-submit {
-  background: linear-gradient(135deg, #7EA1FF, #5D8DEE);
+  background: linear-gradient(135deg, #6D98D9, #4F82C3);
   color: #fff;
   padding: 12px 20px;
-  border-radius: 12px;
+  border-radius: 10px;
   font-size: 1rem;
   transition: all 0.3s ease-in-out;
 }
 
 .btn-submit:hover {
-  background: #5D8DEE;
+  background: #4F82C3;
   transform: translateY(-3px);
 }

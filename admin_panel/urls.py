@@ -4,6 +4,8 @@ from .views import approve_users
 from . import views
 from .views import upload_syllabus, syllabus_list
 
+
+
 urlpatterns = [
     path('register/', views.register_admin, name='admin_register'),
     path('login/', views.admin_login, name='admin_login'), 

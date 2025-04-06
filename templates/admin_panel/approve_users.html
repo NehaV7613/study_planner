@@ -6,51 +6,222 @@
     <title>Approve Users</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --border-radius: 10px;
+            --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+
         body {
-            background-color: #f8f9fa;
-            padding: 20px;
+            background-color: #f5f7ff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--dark-color);
+            line-height: 1.6;
         }
-        .message {
-            padding: 10px;
-            margin-bottom: 20px;
-            border-radius: 5px;
+
+        .container {
+            max-width: 800px;
+            padding: 2rem;
+        }
+
+        .page-header {
             text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.1);
         }
-        .message.success {
-            background-color: #d4edda;
+
+        .page-header h1 {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        /* Message Styling */
+        .alert-message {
+            border-radius: var(--border-radius);
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            box-shadow: var(--box-shadow);
+            border: none;
+        }
+
+        .alert-message.success {
+            background-color: rgba(40, 167, 69, 0.15);
             color: #155724;
-            border: 1px solid #c3e6cb;
         }
-        .message.error {
-            background-color: #f8d7da;
+
+        .alert-message.error {
+            background-color: rgba(220, 53, 69, 0.15);
             color: #721c24;
-            border: 1px solid #f5c6cb;
         }
+
+        .alert-message i {
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        /* User Card Styling */
         .user-card {
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            padding: 15px;
-            margin-bottom: 10px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .user-card .actions {
+
+        .user-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-info {
+            flex: 1;
+        }
+
+        .user-info strong {
+            display: inline-block;
+            min-width: 80px;
+            color: #6c757d;
+        }
+
+        .user-role {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .student-role {
+            background-color: rgba(67, 97, 238, 0.1);
+            color: var(--primary-color);
+        }
+
+        .faculty-role {
+            background-color: rgba(108, 117, 125, 0.1);
+            color: #6c757d;
+        }
+
+        .admin-role {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--danger-color);
+        }
+
+        .action-buttons {
             display: flex;
-            gap: 10px;
+            gap: 0.75rem;
+        }
+
+        .btn-approve {
+            background-color: var(--success-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .btn-approve:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        .btn-reject {
+            background-color: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            transition: var(--transition);
+        }
+
+        .btn-reject:hover {
+            background-color: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #6c757d;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state p {
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.75rem 1.5rem;
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: var(--box-shadow);
+        }
+
+        .back-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .user-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .action-buttons {
+                width: 100%;
+                justify-content: flex-end;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center mb-4">Approve Student/Faculty Registrations</h1>
+        <div class="page-header">
+            <h1>Approve Registrations</h1>
+            <p class="text-muted">Review and approve pending student and faculty accounts</p>
+        </div>
 
         <!-- Messages -->
         {% if messages %}
             {% for message in messages %}
-                <div class="message {% if message.tags == 'success' %}success{% else %}error{% endif %}">
+                <div class="alert-message {% if message.tags == 'success' %}success{% else %}error{% endif %}">
+                    <i class="fas {% if message.tags == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %}"></i>
                     {{ message }}
                 </div>
             {% endfor %}
@@ -58,31 +229,54 @@
 
         <!-- Pending Users List -->
         {% if pending_users %}
-            <div class="list-group">
+            <div class="user-list">
                 {% for user in pending_users %}
                     <div class="user-card">
-                        <div>
-                            <strong>Username:</strong> {{ user.username }} <br>
-                            <strong>Role:</strong> {{ user.get_role_display }}
+                        <div class="user-info">
+                            <div><strong>Username:</strong> {{ user.username }}</div>
+                            <div class="mt-2">
+                                <strong>Role:</strong> {{ user.get_role_display }}
+                                <span class="user-role 
+                                    {% if user.role == 'STUDENT' %}student-role
+                                    {% elif user.role == 'FACULTY' %}faculty-role
+                                    {% else %}admin-role{% endif %}">
+                                    {{ user.get_role_display }}
+                                </span>
+                            </div>
                         </div>
-                        <div class="actions">
+                        <div class="action-buttons">
                             <form method="post" class="d-inline">
                                 {% csrf_token %}
                                 <input type="hidden" name="user_id" value="{{ user.id }}">
-                                <button type="submit" name="action" value="approve" class="btn btn-success btn-sm">Approve</button>
-                                <button type="submit" name="action" value="reject" class="btn btn-danger btn-sm">Reject</button>
+                                <button type="submit" name="action" value="approve" class="btn-approve">
+                                    <i class="fas fa-check"></i> Approve
+                                </button>
+                                <button type="submit" name="action" value="reject" class="btn-reject">
+                                    <i class="fas fa-times"></i> Reject
+                                </button>
                             </form>
                         </div>
                     </div>
                 {% endfor %}
             </div>
         {% else %}
-            <p class="text-center">No pending registrations.</p>
+            <div class="empty-state">
+                <i class="fas fa-user-check"></i>
+                <h3>No Pending Registrations</h3>
+                <p>All user accounts have been processed</p>
+            </div>
         {% endif %}
+
+        <div class="text-center">
+            <a href="{% url 'admin_dashboard' %}" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Admin Panel
+            </a>   
+        </div>
     </div>
 
     <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 </body>
 </html>

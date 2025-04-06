@@ -12,7 +12,7 @@ def register(request):
             user.is_approved = False  # User needs admin approval before login
             user.save()
             messages.success(request, "Registration successful! Please wait for admin approval.")
-            return redirect("index")  # Redirect to the homepage after successful registration
+            return redirect("homepage")  # Redirect to the homepage after successful registration
         else:
             print(form.errors)  # Debugging errors if form validation fails
 
